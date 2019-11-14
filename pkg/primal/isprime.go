@@ -1,3 +1,8 @@
+// Primality test
+// Paper: Fast Primality Testing for Integers That Fit into a Machine Word
+// Authors: Michal Forišek and Jakub Jančina
+// Online: http://ceur-ws.org/Vol-1326/020-Forisek.pdf
+// Source: https://people.ksp.sk/~misof/primes/FJ64_16k.cc
 package primal
 
 import (

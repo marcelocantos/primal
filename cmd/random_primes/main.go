@@ -39,16 +39,28 @@ func lower(c byte) byte {
 	return c | ('x' - 'X')
 }
 
+func usage(err error) {
+	log.Fatalf("Usage: random_primes n [seed] (format of n determines output format)\n%v", err)
+}
+
 func main() {
 	s := os.Args[1]
+	seed := time.Now().UnixNano()
+	if len(os.Args) > 2 {
+		var err error
+		seed, err = strconv.ParseInt(os.Args[2], 0, 64)
+		if err != nil {
+			usage(err)
+		}
+	}
 	n, err := strconv.ParseUint(s, 0, 64)
 	if err != nil {
-		log.Fatalf("Usage: random_primes n (format of n determines output format)\n%v", err)
+		usage(err)
 	}
 	prefix := prefixRE.FindString(s)
 	base := computeBase(s)
 
-	rand.Seed(time.Now().UnixNano())
+	rand.Seed(seed)
 	for i := 0; i < int(n); i++ {
 		for {
 			u := rand.Uint64()
