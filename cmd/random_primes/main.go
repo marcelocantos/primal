@@ -61,12 +61,16 @@ func main() {
 	base := computeBase(s)
 
 	rand.Seed(seed)
+	seen := map[uint64]struct{}{}
 	for i := 0; i < int(n); i++ {
 		for {
 			u := rand.Uint64()
-			if primal.IsPrime(u) {
-				fmt.Printf("%s%s\n", prefix, strconv.FormatUint(u, base))
-				break
+			if _, has := seen[u]; !has {
+				if primal.IsPrime(u) {
+					seen[u] = struct{}{}
+					fmt.Printf("%s%s\n", prefix, strconv.FormatUint(u, base))
+					break
+				}
 			}
 		}
 	}
