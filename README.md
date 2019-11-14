@@ -1,5 +1,6 @@
 # primal
-Fast primality detection
+
+Fast uint64 primality detection. Includes program to generate random primes.
 
 # Usage
 
