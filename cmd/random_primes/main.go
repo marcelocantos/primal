@@ -7,37 +7,13 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/marcelocantos/primal/pkg/primal"
 )
 
 var prefixRE = regexp.MustCompile(`^0[box]?`)
-
-func computeBase(s string) int {
-	base := 10
-	if s[0] == '0' {
-		switch {
-		case len(s) >= 3 && lower(s[1]) == 'b':
-			base = 2
-			s = s[2:]
-		case len(s) >= 3 && lower(s[1]) == 'o':
-			base = 8
-			s = s[2:]
-		case len(s) >= 3 && lower(s[1]) == 'x':
-			base = 16
-			s = s[2:]
-		default:
-			base = 8
-			s = s[1:]
-		}
-	}
-	return base
-}
-
-func lower(c byte) byte {
-	return c | ('x' - 'X')
-}
 
 func usage(err error) {
 	log.Fatalf("Usage: random_primes n [seed] (format of n determines output format)\n%v", err)
@@ -58,7 +34,10 @@ func main() {
 		usage(err)
 	}
 	prefix := prefixRE.FindString(s)
-	base := computeBase(s)
+	base, hasBase := map[string]int{"0b": 1, "0": 8, "0o": 8, "0x": 16}[strings.ToLower(prefix)]
+	if !hasBase {
+		base = 10
+	}
 
 	rand.Seed(seed)
 	seen := map[uint64]struct{}{}
