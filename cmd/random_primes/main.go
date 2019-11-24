@@ -43,7 +43,7 @@ func main() {
 	seen := map[uint64]struct{}{}
 	for i := 0; i < int(n); i++ {
 		for {
-			u := rand.Uint64()
+			u := rand.Uint64() | 1
 			if _, has := seen[u]; !has {
 				if primal.IsPrime(u) {
 					seen[u] = struct{}{}
